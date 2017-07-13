@@ -34,6 +34,7 @@ public class App
  
 		System.out.println("size="+documents.size());
 		
+		
                for(Document document : documents){
                    System.out.println(document.get("first_name"));
                }
