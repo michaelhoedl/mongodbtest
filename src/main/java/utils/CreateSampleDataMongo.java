@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Random;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -160,11 +161,25 @@ public class CreateSampleDataMongo {
 		Product p1;
 		for (int i = 1; i <= 1000000; i++) {
 			p1 = new Product(i, "Product"+i, "The best Product!", randy.nextFloat()*randy.nextInt(1000), randy.nextFloat()*randy.nextInt(500));
+			fillProducts2Categories(p1);
 			productlist.add(p1);
 		}
 		endtime = System.nanoTime();
 		System.out.println("Duration of fillProducts (ms): "+(endtime-starttime)/1000000);
 		
+	}
+	
+	/**
+	 * Fill some sample Categories into the Products
+	 */
+	private void fillProducts2Categories(Product p) {
+		Random randy = new Random();
+		HashSet<String> cats = new HashSet<String>();
+		//set up to 10 categories for the product
+		for(int j = 1; j <= randy.nextInt(9)+1; j++) {
+			cats.add("category"+j);
+		}
+		p.setCategories(cats);	
 	}
 	
 	/**
@@ -251,7 +266,7 @@ public class CreateSampleDataMongo {
 	
 
 	/**
-	 * Fill the ArrayList with 5000000 sample Orderline Objects
+	 * Fill the HashSet with 5000000 sample Orderline Objects
 	 */
 	private void fillOrderline() {
 		long starttime;
@@ -295,21 +310,31 @@ public class CreateSampleDataMongo {
 		long endtime;
 		starttime = System.nanoTime();
 		
+		BasicDBObject order = null;
+		BasicDBObject user = null;
+		BasicDBObject product = null;
+		BasicDBList cats = null;
+		
 		for(Orderline o1 : orderlinelist) {
 
-			BasicDBObject order = new BasicDBObject();
+			order = new BasicDBObject();
 			order.put("order_id", o1.getOrder().getOrder_id());
 			
-			BasicDBObject user = new BasicDBObject();
+			user = new BasicDBObject();
 			user.put("username", o1.getOrder().getUser().getUsername());			
 			order.put("user", user);
 			
 			order.put("orderdate",o1.getOrder().getOrder_date());
 			order.put("amount", o1.getAmount());
 			
-			BasicDBObject product = new BasicDBObject();
+			product = new BasicDBObject();
 			product.put("product_id", o1.getProduct().getProduct_id());
 			product.put("price", o1.getProduct().getPrice());
+			
+			cats = new BasicDBList();
+			cats.addAll(o1.getProduct().getCategories());
+			product.put("categories", cats);
+			
 			order.put("product", product);
 			
 			
