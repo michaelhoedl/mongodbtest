@@ -315,8 +315,50 @@ public class CreateSampleDataMongo {
 		BasicDBObject product = null;
 		BasicDBList cats = null;
 		
-		for(Orderline o1 : orderlinelist) {
+		BasicDBObject orderlines = null;
 
+		
+		/*
+		for(Orders ord : orderlist) {
+			order = new BasicDBObject();
+			order.put("order_id", ord.getOrder_id());
+			
+			user = new BasicDBObject();
+			user.put("username", ord.getUser().getUsername());			
+			order.put("user", user);
+			
+			order.put("orderdate",ord.getOrder_date());
+			
+			
+			for(Orderline o1 : orderlinelist) {
+				if(o1.getOrder().equals(ord)) {
+					
+					orderlines = new BasicDBObject();
+					orderlines.put("amount", o1.getAmount());
+					
+					product = new BasicDBObject();
+					product.put("product_id", o1.getProduct().getProduct_id());
+					product.put("price", o1.getProduct().getPrice());
+					
+					cats = new BasicDBList();
+					cats.addAll(o1.getProduct().getCategories());
+					product.put("categories", cats);
+					
+					orderlines.put("product", product);
+					
+					order.put("orderlines", orderlines);
+				}
+				
+				
+			}	
+			collection.insert(order);
+		}
+		*/
+		
+		
+		
+		for(Orderline o1 : orderlinelist) {
+			
 			order = new BasicDBObject();
 			order.put("order_id", o1.getOrder().getOrder_id());
 			
@@ -341,6 +383,8 @@ public class CreateSampleDataMongo {
 			collection.insert(order);
 			
 		}
+		
+		
 		
 
 		
